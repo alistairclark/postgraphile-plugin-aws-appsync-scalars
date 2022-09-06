@@ -1,6 +1,6 @@
 {
   "name": "@cloudcycle/postgraphile-plugin-aws-appsync-scalars",
-  "version": "0.0.1-pre1",
+  "version": "0.0.1",
   "description": "Postgraphile plugin to convert Postgraphile-generated custom scalar names to those AWS AppSync accepts",
   "main": "build/index.js",
   "scripts": {
