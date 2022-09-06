@@ -92,6 +92,7 @@ Roadmap
 -------
 
 * Add unit tests
+* Support scalar types from the PostGIS plugin, notably GeoJSON.
 * Allow user-specified types (e.g. SQL domains) to be converted.
 * Allow AWS types for fields, arguments etc. to be specified via smart-comments, so
 that we could make use of the extra checking AWS AppSync performs when using AWSEmail,
