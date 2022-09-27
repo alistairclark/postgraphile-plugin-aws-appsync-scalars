@@ -9,8 +9,7 @@ import {
 
 
 const AwsCustomScalarNamesPlugin = makeAddInflectorsPlugin(
-    inflectors => {
-        const { builtin: oldBuiltin } = inflectors;
+    ({ builtin: oldBuiltin }) => {
         return {
             builtin(text: any) {
                 const awsTypeMappings = {
