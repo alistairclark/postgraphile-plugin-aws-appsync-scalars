@@ -25,14 +25,42 @@ const AwsCustomScalarNamesPlugin = makeAddInflectorsPlugin(
     true
 );
 
-const cursorPlugin: Plugin = (builder: SchemaBuilder) => {
+const typeReplacementPlugin: Plugin = (builder: SchemaBuilder) => {
     builder.hook('build', (_, build, __) => {
-        const { getTypeByName: oldGetTypeByName, graphql } = build;
-        build.getTypeByName = (name: string) => {
-            if (name === "Cursor") {
-                return graphql.GraphQLString
+        const {
+            getTypeByName: oldGetTypeByName,
+            graphql,
+            pgRegisterGqlTypeByTypeId
+        } = build;
+
+        const dbTypeMappings = {
+            BigInt: graphql.GraphQLInt,
+            BigFloat: graphql.GraphQLFloat
+        };
+
+        const dbTypeOids = {
+            // BigInt (8 bytes):
+            BigInt: 20,
+            // Numeric / Decimal
+            BigFloat: 1700
+        };
+
+        Object.entries(dbTypeMappings).forEach(
+            ([typeName, scalarType]) => {
+                const oid = dbTypeOids[typeName as keyof typeof dbTypeOids];
+                pgRegisterGqlTypeByTypeId(
+                    `${oid}`,
+                    () => { return scalarType; }
+                );
             }
-            return oldGetTypeByName.call(this, name);
+        );
+
+        build.getTypeByName = (name: string) => {
+            const nameMapping = {
+                Cursor: graphql.GraphQLString,
+                ...dbTypeMappings
+            };
+            return nameMapping[name as keyof typeof nameMapping] ?? oldGetTypeByName.call(this, name);
         };
         return build;
     });
@@ -40,5 +68,5 @@ const cursorPlugin: Plugin = (builder: SchemaBuilder) => {
 
 export const awsAppsyncScalarsPlugin = makePluginByCombiningPlugins(
     AwsCustomScalarNamesPlugin,
-    cursorPlugin
+    typeReplacementPlugin
 );

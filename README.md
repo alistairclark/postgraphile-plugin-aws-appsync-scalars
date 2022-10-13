@@ -57,42 +57,38 @@ Then add it to the appendPlugins array. E.g.:
 ```javascript
 app.use(
   postgraphile(process.env.AUTH_DATABASE_URL, "app_public", {
-    appendPlugins: [awsAppsyncScalarsPlugin],
+    appendPlugins: [
+      awsAppsyncScalarsPlugin,
+      // Any other plugins that reference types explicitly
+      // should go here.
+    ],
+
+    // Ensure JSON fields are returned serialised to strings, as this is
+    // what the AWSJSON type expects.
     dynamicJson: false,
 
     // Optional customisation
     graphileBuildOptions: {
-      /*
-       * Uncomment if you want simple collections to lose the 'List' suffix
-       * (and connections to gain a 'Connection' suffix).
-       */
-      //pgOmitListSuffix: true,
-      /*
-       * Uncomment if you want 'userPatch' instead of 'patch' in update
-       * mutations.
-       */
-      //pgSimplifyPatch: false,
-      /*
-       * Uncomment if you want 'allUsers' instead of 'users' at root level.
-       */
-      //pgSimplifyAllRows: false,
-      /*
-       * Uncomment if you want primary key queries and mutations to have
-       * `ById` (or similar) suffix; and the `nodeId` queries/mutations
-       * to lose their `ByNodeId` suffix.
-       */
-      // pgShortPk: true,
     },
     // ... other settings ...
   })
 );
 ```
 
+Interoperability
+----------------
+
+The order in which this plugin is specified could affect the resulting
+schema. When another plugin makes explicit references to
+types, this plugin needs to be listed in _append_plugins_ before it. In particular, this is the case with [the @graphile/pg-aggregates plugin](https://www.npmjs.com/package/@graphile/pg-aggregates).
+
 Roadmap
 -------
 
 * Add unit tests
 * Support scalar types from the PostGIS plugin, notably GeoJSON.
+* Allow the mapping of PosgreSQL types to AppSync compatible types to be
+  customised.
 * Allow user-specified types (e.g. SQL domains) to be converted.
 * Allow AWS types for fields, arguments etc. to be specified via smart-comments, so
 that we could make use of the extra checking AWS AppSync performs when using AWSEmail,
