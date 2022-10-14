@@ -79,7 +79,7 @@ Interoperability
 ----------------
 
 The order in which this plugin is specified could affect the resulting
-schema. When another plugin makes explicit references to
+schema, and you may achieve more predictable results by listing this plugin first. When another plugin makes explicit references to
 types, this plugin needs to be listed in _append_plugins_ before it. In particular, this is the case with [the @graphile/pg-aggregates plugin](https://www.npmjs.com/package/@graphile/pg-aggregates).
 
 Roadmap
