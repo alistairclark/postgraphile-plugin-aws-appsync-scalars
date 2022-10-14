@@ -11,6 +11,8 @@ Current name mappings:
 | JSON | AWSJSON |
 | Datetime | AWSDateTime |
 | Date | AWSDate |
+| BigInt | Int |
+| BigFloat | Float |
 | Cursor | String |
 
 
