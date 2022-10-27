@@ -16,8 +16,9 @@ const AwsCustomScalarNamesPlugin = makeAddInflectorsPlugin(
                     'JSON': 'AWSJSON',
                     'Datetime': 'AWSDateTime',
                     'Time': 'AWSTime',
-                    'Date': 'AWSDate'
-                } as {[key: string]: string};
+                    'Date': 'AWSDate',
+                    'UUID': 'String'
+                } as { [key: string]: string };
                 return awsTypeMappings?.[text] ?? oldBuiltin.call(this, text);
             }
         };
