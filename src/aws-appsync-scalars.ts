@@ -16,8 +16,7 @@ const AwsCustomScalarNamesPlugin = makeAddInflectorsPlugin(
                     'JSON': 'AWSJSON',
                     'Datetime': 'AWSDateTime',
                     'Time': 'AWSTime',
-                    'Date': 'AWSDate',
-                    'UUID': 'String'
+                    'Date': 'AWSDate'
                 } as { [key: string]: string };
                 return awsTypeMappings?.[text] ?? oldBuiltin.call(this, text);
             }
@@ -36,7 +35,8 @@ const typeReplacementPlugin: Plugin = (builder: SchemaBuilder) => {
 
         const dbTypeMappings = {
             BigInt: graphql.GraphQLInt,
-            BigFloat: graphql.GraphQLFloat
+            BigFloat: graphql.GraphQLFloat,
+            UUID: graphql.string
         };
 
         const dbTypeOids = {
