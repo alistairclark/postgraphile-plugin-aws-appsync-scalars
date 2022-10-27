@@ -36,7 +36,7 @@ const typeReplacementPlugin: Plugin = (builder: SchemaBuilder) => {
         const dbTypeMappings = {
             BigInt: graphql.GraphQLInt,
             BigFloat: graphql.GraphQLFloat,
-            UUID: graphql.string
+            UUID: graphql.GraphQLString
         };
 
         const dbTypeOids = {
