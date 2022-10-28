@@ -35,14 +35,16 @@ const typeReplacementPlugin: Plugin = (builder: SchemaBuilder) => {
 
         const dbTypeMappings = {
             BigInt: graphql.GraphQLInt,
-            BigFloat: graphql.GraphQLFloat
+            BigFloat: graphql.GraphQLFloat,
+            UUID: graphql.GraphQLString
         };
 
         const dbTypeOids = {
             // BigInt (8 bytes):
             BigInt: 20,
             // Numeric / Decimal
-            BigFloat: 1700
+            BigFloat: 1700,
+            UUID: 2950
         };
 
         Object.entries(dbTypeMappings).forEach(
@@ -58,7 +60,6 @@ const typeReplacementPlugin: Plugin = (builder: SchemaBuilder) => {
         build.getTypeByName = (name: string) => {
             const nameMapping = {
                 Cursor: graphql.GraphQLString,
-                UUID: graphql.GraphQLString,
                 ...dbTypeMappings
             };
             return nameMapping[name as keyof typeof nameMapping] ?? oldGetTypeByName.call(this, name);
